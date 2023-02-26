@@ -1,0 +1,18 @@
+/* Using SASS https://sass-lang.com/guide */
+
+$myColor: red;
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Roboto', sans-serif;
+}
+
+.App {
+  text-align: center;
+  /* Positioning and min-height to keep footer at bottom https://www.freecodecamp.org/news/how-to-keep-your-footer-where-it-belongs-59c6aa05c59c*/
+  position: relative;
+  min-height: 100vh;
+}
+

@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 const Register = () => {
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -24,7 +25,6 @@ const Register = () => {
         sx={{ mt: 3, mb: 3 }}
         component="form"
         noValidate
-        autoComplete="off"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1>Register</h1>
@@ -32,26 +32,51 @@ const Register = () => {
         <TextField
           sx={{ mb: 2 }}
           fullWidth
-          id="outlined-basic"
           label="Email"
+          autoFocus
+          autoComplete="on"
           variant="outlined"
-          {...register("email", { required: "Required" })}
+          {...register("email", {
+            required: "The Email field is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Invalid email address",
+            },
+          })}
           error={!!errors?.email}
           helperText={errors?.email ? errors.email.message : null}
         />
         <TextField
           sx={{ mb: 2 }}
           fullWidth
-          id="outlined-basic"
           label="Password"
           variant="outlined"
+          autoComplete="off"
+          type="password"
+          {...register("password", {
+            required: "The Password field is required",
+          })}
+          error={!!errors?.password}
+          helperText={errors?.password ? errors.password.message : null}
         />
         <TextField
           sx={{ mb: 2 }}
           fullWidth
-          id="outlined-basic"
           label="Confirm Password"
+          autoComplete="off"
           variant="outlined"
+          type="password"
+          {...register("confirmPassword", {
+            required: "The Confirm Password field is required",
+            validate: (value) => {
+              const { password } = getValues();
+              return password === value || "Passwords should match!";
+            },
+          })}
+          error={!!errors?.confirmPassword}
+          helperText={
+            errors?.confirmPassword ? errors.confirmPassword.message : null
+          }
         />
         <Button
           variant="contained"

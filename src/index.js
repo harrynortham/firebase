@@ -13,6 +13,9 @@ import reportWebVitals from "./reportWebVitals";
 // React router https://blog.webdevsimplified.com/2022-07/react-router/
 // Using indexes to export named files https://stackoverflow.com/questions/44092341/how-do-index-js-files-work-in-react-component-directories
 // Installing SASS in react https://www.w3schools.com/react/react_sass_styling.asp
+// Using Firebase auth with React Hook Form https://dev.to/oloriasabi/creating-an-authentication-form-using-react-hook-form-react-and-firebase-5d9h
+// React Hook Form https://react-hook-form.com/
+// MUI with React Hook Form https://www.youtube.com/watch?v=ev6E5SextWE
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

@@ -4,11 +4,22 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { Link } from "react-router-dom";
 
+const handleSubmit = (e) => {
+  alert("Submitted");
+  e.preventDefault();
+};
+
 const Login = () => {
   return (
     <Container maxWidth="sm">
-      <Box sx={{ mt: 3, mb: 3 }} component="form" noValidate autoComplete="off">
-        <h1>Sign in</h1>
+      <Box
+        sx={{ mt: 3, mb: 3 }}
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
+        <h1>Log in</h1>
         <p>Use your MyApp Account</p>
         <TextField
           sx={{ mb: 2 }}
@@ -16,6 +27,7 @@ const Login = () => {
           id="outlined-basic"
           label="Email"
           variant="outlined"
+          autoFocus
         />
         <TextField
           sx={{ mb: 2 }}
@@ -24,11 +36,17 @@ const Login = () => {
           label="Password"
           variant="outlined"
         />
-        <Button size="large" variant="contained" disableElevation>
-          Next
+        <Button
+          size="large"
+          variant="contained"
+          disableElevation
+          type="submit"
+          fullWidth
+        >
+          Log In
         </Button>
         <p>
-          Troubles signing in? <Link to="/reset-password">Reset Password</Link>
+          Troubles logging in? <Link to="/reset-password">Reset Password</Link>
         </p>
       </Box>
     </Container>

@@ -31,7 +31,7 @@ const Header = () => {
           </Box>
 
           <Button color="inherit" component={Link} to="/login">
-            Login
+            Log In
           </Button>
 
           <Button color="inherit" component={Link} to="/register">

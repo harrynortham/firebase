@@ -6,12 +6,18 @@ import { Link } from "react-router-dom";
 import "./Register.scss";
 import { useForm } from "react-hook-form";
 
-const handleSubmit = (e) => {
-  alert("Submitted");
-  e.preventDefault();
-};
+// Check react hook form on how to validate onChange and then submit form after
+// Validate that password fields match
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <Container maxWidth="sm">
       <Box
@@ -19,7 +25,7 @@ const Register = () => {
         component="form"
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <h1>Register</h1>
         <p>Create your MyApp Account</p>
@@ -29,6 +35,9 @@ const Register = () => {
           id="outlined-basic"
           label="Email"
           variant="outlined"
+          {...register("email", { required: "Required" })}
+          error={!!errors?.email}
+          helperText={errors?.email ? errors.email.message : null}
         />
         <TextField
           sx={{ mb: 2 }}

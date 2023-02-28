@@ -10,7 +10,7 @@ import { auth } from "../config/firebase";
 const authContext = createContext();
 
 export function AuthContextProvider({ children }) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null); // Use null state or useState() to stop flicker of UI (issue having more than 2 states)
 
   function logIn(email, password) {
     return signInWithEmailAndPassword(auth, email, password);
@@ -21,6 +21,8 @@ export function AuthContextProvider({ children }) {
   function logOut() {
     return signOut(auth);
   }
+
+  // Add further functions here for ForgotPassword, ChangePassword, UpdateDetails etc
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {

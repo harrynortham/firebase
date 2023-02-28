@@ -35,7 +35,7 @@ const Register = () => {
 
     try {
       await signUp(data.email, data.password);
-      navigate("/"); //Navigate to dashboard once created
+      navigate("/"); // Navigate to dashboard once created
       console.log("User created");
 
       // Add code to create a new document in users db with firstname and lastname

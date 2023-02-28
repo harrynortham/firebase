@@ -13,13 +13,13 @@ import "./Header.scss";
 import logo from "../assets/logo.svg";
 
 const Header = () => {
-  const { logOut } = useAuth();
+  const { logOut, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logOut();
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error.message);
     }
@@ -45,17 +45,24 @@ const Header = () => {
             </Link>
           </Box>
 
-          <Button color="inherit" onClick={handleLogout}>
-            Logout
-          </Button>
+          {user && (
+            //fix issue with flashing content while checking user
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          )}
 
-          <Button color="inherit" component={Link} to="/login">
-            Log In
-          </Button>
+          {!user && (
+            <Button color="inherit" component={Link} to="/login">
+              Log In
+            </Button>
+          )}
 
-          <Button color="inherit" component={Link} to="/register">
-            Register
-          </Button>
+          {!user && (
+            <Button color="inherit" component={Link} to="/register">
+              Register
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

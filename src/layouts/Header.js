@@ -1,3 +1,6 @@
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -10,6 +13,18 @@ import "./Header.scss";
 import logo from "../assets/logo.svg";
 
 const Header = () => {
+  const { logOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" elevation={0}>
@@ -29,6 +44,10 @@ const Header = () => {
               <img src={logo} alt="Logo" className="Logo" />
             </Link>
           </Box>
+
+          <Button color="inherit" onClick={handleLogout}>
+            Logout
+          </Button>
 
           <Button color="inherit" component={Link} to="/login">
             Log In

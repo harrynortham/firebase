@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { auth } from "../config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "@mui/material/Container";
@@ -11,6 +10,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import Alert from "@mui/material/Alert";
 
 import "./Register.scss";
 
@@ -24,25 +24,30 @@ const Register = () => {
     register,
   } = useForm();
 
+  const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  // On submit create user with Google auth and redirect to /
+  const [authError, setAuthError] = useState();
+
+  // On submit create user with Google auth and redirect
   async function onhandleSubmit(data) {
     //console.log(data);
 
     try {
-      await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password,
-        data.name
-      );
-      navigate("/");
-      alert("User Created Successfully");
+      await signUp(data.email, data.password);
+      navigate("/"); //Navigate to dashboard once created
+      console.log("User created");
+
+      // Add code to create a new document in users db with firstname and lastname
     } catch (error) {
-      console.log(error);
-      alert("User created failed");
-      alert(error);
+      //console.log(error);
+      const errorCode = {
+        "auth/email-already-in-use": "Email is already in use",
+        "auth/invalid-email": "Invalid email address",
+        "auth/operation-not-allowed": "Could not create account at this time",
+        "auth/weak-password": "Password is too weak",
+      };
+      setAuthError(errorCode[error.code]);
     }
   }
 
@@ -66,6 +71,13 @@ const Register = () => {
       >
         <h1>Register</h1>
         <p>Create your MyApp Account</p>
+
+        {authError && (
+          <Alert variant="filled" severity="error" sx={{ mb: 2 }}>
+            {authError}
+          </Alert>
+        )}
+
         <TextField
           sx={{ mb: 2 }}
           fullWidth
@@ -151,7 +163,7 @@ const Register = () => {
           Register
         </Button>
         <p>
-          Already have an account? <Link to="/signin">Sign In</Link>
+          Already have an account? <Link to="/login">Sign In</Link>
         </p>
       </Box>
     </Container>

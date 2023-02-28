@@ -1,23 +1,35 @@
+import { useState } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import "./Register.scss";
 import { useForm } from "react-hook-form";
 
-// Check react hook form on how to validate onChange and then submit form after
-// Validate that password fields match
+// Validate that password fields match https://stackoverflow.com/questions/70480928/how-to-validate-password-and-confirm-password-in-react-hook-form-is-there-any-v/71429960#71429960
+// REGEX rules for password https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 
 const Register = () => {
   const {
-    register,
-    getValues,
     handleSubmit,
     formState: { errors },
+    register,
   } = useForm();
 
   const onSubmit = (data) => console.log(data);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <Container maxWidth="sm">
@@ -32,8 +44,32 @@ const Register = () => {
         <TextField
           sx={{ mb: 2 }}
           fullWidth
-          label="Email"
+          label="First Name"
           autoFocus
+          autoComplete="on"
+          variant="outlined"
+          {...register("firstName", {
+            required: "The First Name field is required",
+          })}
+          error={!!errors?.firstName}
+          helperText={errors?.firstName ? errors.firstName.message : null}
+        />
+        <TextField
+          sx={{ mb: 2 }}
+          fullWidth
+          label="Last Name"
+          autoComplete="on"
+          variant="outlined"
+          {...register("lastName", {
+            required: "The Last Name field is required",
+          })}
+          error={!!errors?.lastName}
+          helperText={errors?.lastName ? errors.lastName.message : null}
+        />
+        <TextField
+          sx={{ mb: 2 }}
+          fullWidth
+          label="Email"
           autoComplete="on"
           variant="outlined"
           {...register("email", {
@@ -52,32 +88,34 @@ const Register = () => {
           label="Password"
           variant="outlined"
           autoComplete="off"
-          type="password"
+          type={showPassword ? "text" : "password"}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
           {...register("password", {
             required: "The Password field is required",
+            pattern: {
+              value:
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/i,
+              message:
+                "Password must be at least 8 characters long, contain both uppercase and lowercase letters, contain at least one number and contain at least on special character",
+            },
           })}
           error={!!errors?.password}
           helperText={errors?.password ? errors.password.message : null}
         />
-        <TextField
-          sx={{ mb: 2 }}
-          fullWidth
-          label="Confirm Password"
-          autoComplete="off"
-          variant="outlined"
-          type="password"
-          {...register("confirmPassword", {
-            required: "The Confirm Password field is required",
-            validate: (value) => {
-              const { password } = getValues();
-              return password === value || "Passwords should match!";
-            },
-          })}
-          error={!!errors?.confirmPassword}
-          helperText={
-            errors?.confirmPassword ? errors.confirmPassword.message : null
-          }
-        />
+
         <Button
           variant="contained"
           size="large"

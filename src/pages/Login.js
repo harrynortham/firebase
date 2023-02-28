@@ -9,6 +9,8 @@ const handleSubmit = (e) => {
   e.preventDefault();
 };
 
+// Rate limit authentication Logins or registration. Check google auth docs and web
+
 const Login = () => {
   return (
     <Container maxWidth="sm">

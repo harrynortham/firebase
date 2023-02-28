@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { auth } from "../config/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,9 +11,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { Link } from "react-router-dom";
+
 import "./Register.scss";
-import { useForm } from "react-hook-form";
 
 // Validate that password fields match https://stackoverflow.com/questions/70480928/how-to-validate-password-and-confirm-password-in-react-hook-form-is-there-any-v/71429960#71429960
 // REGEX rules for password https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
@@ -21,7 +24,29 @@ const Register = () => {
     register,
   } = useForm();
 
-  const onSubmit = (data) => console.log(data);
+  const navigate = useNavigate();
+
+  // On submit create user with Google auth and redirect to /
+  async function onhandleSubmit(data) {
+    //console.log(data);
+
+    try {
+      await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password,
+        data.name
+      );
+      navigate("/");
+      alert("User Created Successfully");
+    } catch (error) {
+      console.log(error);
+      alert("User created failed");
+      alert(error);
+    }
+  }
+
+  // Add state and click handler for hide/show password icon
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -37,7 +62,7 @@ const Register = () => {
         sx={{ mt: 3, mb: 3 }}
         component="form"
         noValidate
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onhandleSubmit)}
       >
         <h1>Register</h1>
         <p>Create your MyApp Account</p>

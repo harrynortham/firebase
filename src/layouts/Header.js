@@ -1,4 +1,4 @@
-import { useAuth } from "../context/AuthContext";
+import { useUserAuth } from "../context/userAuthContext";
 import { useNavigate } from "react-router";
 
 import AppBar from "@mui/material/AppBar";
@@ -13,7 +13,8 @@ import "./Header.scss";
 import logo from "../assets/logo.svg";
 
 const Header = () => {
-  const { logOut, user } = useAuth();
+  const { logOut, user } = useUserAuth();
+
   const navigate = useNavigate();
 
   const handleLogout = async () => {

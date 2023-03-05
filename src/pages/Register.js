@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useUserAuth } from "../context/userAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "@mui/material/Container";
@@ -17,6 +17,8 @@ import "./Register.scss";
 // Validate that password fields match https://stackoverflow.com/questions/70480928/how-to-validate-password-and-confirm-password-in-react-hook-form-is-there-any-v/71429960#71429960
 // REGEX rules for password https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
 
+// ADD GOOGLE SIGN UP
+
 const Register = () => {
   const {
     handleSubmit,
@@ -24,7 +26,7 @@ const Register = () => {
     register,
   } = useForm();
 
-  const { signUp } = useAuth();
+  const { signUp } = useUserAuth();
   const navigate = useNavigate();
 
   const [authError, setAuthError] = useState();

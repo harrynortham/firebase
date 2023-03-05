@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useUserAuth } from "../context/userAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import Container from "@mui/material/Container";
@@ -21,7 +21,7 @@ const Login = () => {
     register,
   } = useForm();
 
-  const { logIn } = useAuth();
+  const { logIn } = useUserAuth();
   const navigate = useNavigate();
 
   const [authError, setAuthError] = useState();

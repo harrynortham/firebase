@@ -18,6 +18,7 @@ import reportWebVitals from "./reportWebVitals";
 // React Hook Form https://react-hook-form.com/
 // MUI with React Hook Form https://www.youtube.com/watch?v=ev6E5SextWE
 
+//strictmode creates double render, need to check if to remove before prod
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useUserAuth } from "../context/userAuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { db } from "../config/firebase";
+import { setDoc, doc } from "firebase/firestore";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -31,17 +33,36 @@ const Register = () => {
 
   const [authError, setAuthError] = useState();
 
-  // On submit create user with Google auth and redirect
+  // On submit create user with Firebase auth and redirect
   async function onhandleSubmit(data) {
-    //console.log(data);
-
     try {
-      await signUp(data.email, data.password);
-      navigate("/dashboard"); // Navigate to dashboard once created
+      // Sign up user with function from userAuthContext
+      const res = await signUp(data.email, data.password);
 
-      // Add code to create a new document in users db with firstname and lastname
+      // Create document in firestore collection with user information
+      const user = res.user;
+
+      try {
+        // Create document in Users collection with user.uid as the document name
+        await setDoc(doc(db, "users", user.uid), {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          authProvider: "local",
+          email: data.email,
+        });
+
+        // Navigate to dashboard once document created
+        navigate("/dashboard");
+      } catch (error) {
+        // How do we handle this error? User is created in Authentication but not in Firestore
+        // Navigate to a blacnk dashboard where user can try again to create their profile document
+        // Show error if could not create document in Firestore Users Collection
+        console.error(error);
+        setAuthError("Unable to create user profile");
+      }
     } catch (error) {
-      //console.log(error);
+      // Show error if could not add user to Firebase Authentication
+      console.error(error);
       const errorCode = {
         "auth/email-already-in-use": "Email is already in use",
         "auth/invalid-email": "Invalid email address",

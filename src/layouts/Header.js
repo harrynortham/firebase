@@ -47,22 +47,27 @@ const Header = () => {
           </Box>
 
           {user && (
-            //fix issue with flashing content while checking user
-            <Button color="inherit" onClick={handleLogout}>
-              Logout
-            </Button>
+            //fix issue with flashing content while checking use
+            <>
+              <Button color="inherit" component={Link} to="/dashboard">
+                Dashboard
+              </Button>
+              <Button color="inherit" onClick={handleLogout}>
+                Logout
+              </Button>
+            </>
           )}
 
           {!user && (
-            <Button color="inherit" component={Link} to="/login">
-              Log In
-            </Button>
-          )}
+            <>
+              <Button color="inherit" component={Link} to="/login">
+                Log In
+              </Button>
 
-          {!user && (
-            <Button color="inherit" component={Link} to="/register">
-              Register
-            </Button>
+              <Button color="inherit" component={Link} to="/register">
+                Register
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>

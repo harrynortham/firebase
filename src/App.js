@@ -9,6 +9,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./routes/ProtectedRoute";
 
+// NEED TO SET CORRECT FIREBASE PERMISSIONS, TO BLOCK ACCESS TO USERS, LEARN
+
 const App = () => {
   return (
     // Wrap routes in our Authentication context
